@@ -23,11 +23,14 @@ if (string.IsNullOrEmpty(connectionString))
 
 }
 
+var useInMemoryDatabase = builder.Configuration.GetValue<bool>("UseInMemoryDatabase");
+
+
 //Check If Vairiable Set
 
 builder.Services
     .AddApplicationLayer()
-    .AddInfrastrauctureLayer(connectionString);
+    .AddInfrastrauctureLayer(connectionString, useInMemoryDatabase);
 
 
 builder.Services.Configure<MySettings>(builder.Configuration.GetSection(nameof(MySettings)));
@@ -46,5 +49,16 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Products.AddRange(
+        new Product { Name = "Notebook", Price = 5.99m },
+        new Product { Name = "Pen", Price = 1.49m }
+    );
+    context.SaveChanges();
+}
+
 
 app.Run();

@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tajan.Standard.Domain\Tajan.Standard.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

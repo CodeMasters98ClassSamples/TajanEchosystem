@@ -8,16 +8,22 @@ namespace Tajan.ProductService.Infrastructure;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddInfrastrauctureLayer(this IServiceCollection services,string connecttionString)
+    public static IServiceCollection AddInfrastrauctureLayer(this IServiceCollection services,string connecttionString,bool useInMemoryDatabase)
     {
         services.AddTransient<IProductService, ProductBusiness>();
 
-        //configuration.GetConnectionString("ApplicationDbContext")
-        services.AddDbContext<CoreDbContext>((options) =>
+        if (useInMemoryDatabase)
         {
-            options.UseSqlServer(connecttionString);
-        }).AddHealthChecks();
-
+            builder.Services.AddDbContext<AppDbContext>(options =>
+             options.UseInMemoryDatabase("AppDbContext"));
+        }
+        else
+        {
+            services.AddDbContext<CoreDbContext>((options) =>
+            {
+                options.UseSqlServer(connecttionString);
+            }).AddHealthChecks();
+        }
 
         return services;
     }
