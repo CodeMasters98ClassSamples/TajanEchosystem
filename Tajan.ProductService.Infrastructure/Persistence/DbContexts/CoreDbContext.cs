@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 using System.Reflection;
 using Tajan.ProductService.API.Entities;
+using Tajan.ProductService.Infrastructure.Persistence.Extensions;
 
 namespace Tajan.ProductService.Infrastructure.DbContexts;
 
@@ -45,16 +44,15 @@ public class CoreDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.RegisterAllEntities(typeof(AppDbContext).Assembly);
-        modelBuilder.HasDefaultSchema("myschema");
+        builder.RegisterAllEntities(typeof(ConfigureServices).Assembly);
+        builder.HasDefaultSchema("myschema");
 
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             relationship.DeleteBehavior = DeleteBehavior.NoAction;
 
-        // Configure the Product entity
-        modelBuilder.Entity<Product>(entity =>
+        builder.Entity<Product>(entity =>
         {
             entity.ToTable("Products");
 
@@ -68,7 +66,6 @@ public class CoreDbContext : DbContext
                 .HasColumnType("decimal(18,2)")
                 .HasDefaultValue(0.0m);
 
-            // Add an index on Name
             entity.HasIndex(p => p.Name).IsUnique(false);
         });
 

@@ -14,8 +14,7 @@ public static class ConfigureServices
 
         if (useInMemoryDatabase)
         {
-            builder.Services.AddDbContext<AppDbContext>(options =>
-             options.UseInMemoryDatabase("AppDbContext"));
+            services.AddDbContext<CoreDbContext>(options => options.UseInMemoryDatabase("AppDbContext"));
         }
         else
         {

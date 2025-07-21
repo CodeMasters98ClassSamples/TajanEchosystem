@@ -1,4 +1,6 @@
-﻿namespace Tajan.Standard.Domain.Wrappers;
+﻿using System.Net;
+
+namespace Tajan.Standard.Domain.Wrappers;
 
 
 //Imutable record to prevent changing value after i set it!

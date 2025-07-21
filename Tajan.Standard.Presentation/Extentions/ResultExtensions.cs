@@ -1,4 +1,7 @@
-﻿namespace Tajan.Standard.Presentation.Extentions;
+﻿using Microsoft.AspNetCore.Mvc;
+using Tajan.Standard.Domain.Wrappers;
+
+namespace Tajan.Standard.Presentation.Extentions;
 
 
 public static class ResultExtensions

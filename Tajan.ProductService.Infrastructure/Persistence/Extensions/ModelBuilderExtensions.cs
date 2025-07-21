@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using Tajan.ProductServcie.Domain.Entities;
 
 namespace Tajan.ProductService.Infrastructure.Persistence.Extensions;
 
