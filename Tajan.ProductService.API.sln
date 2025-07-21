@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tajan.OrderService.Applicat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tajan.OrderService.Infrastructure", "Tajan.OrderService.Infrastructure\Tajan.OrderService.Infrastructure.csproj", "{8C4FF015-8F2D-4F92-A4F2-33920AE3B850}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tajan.Captcha.API", "Tajan.Captcha.API\Tajan.Captcha.API.csproj", "{552C5B35-B196-40CA-986F-E8CD856A0D75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,10 @@ Global
 		{8C4FF015-8F2D-4F92-A4F2-33920AE3B850}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C4FF015-8F2D-4F92-A4F2-33920AE3B850}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C4FF015-8F2D-4F92-A4F2-33920AE3B850}.Release|Any CPU.Build.0 = Release|Any CPU
+		{552C5B35-B196-40CA-986F-E8CD856A0D75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{552C5B35-B196-40CA-986F-E8CD856A0D75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{552C5B35-B196-40CA-986F-E8CD856A0D75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{552C5B35-B196-40CA-986F-E8CD856A0D75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +134,7 @@ Global
 		{423C6C43-C341-4BD9-ACDE-E36421266A53} = {533E9901-93EA-4583-B599-1919BB9DE471}
 		{19B9C665-FBE8-4A65-B59C-55216CEFC882} = {533E9901-93EA-4583-B599-1919BB9DE471}
 		{8C4FF015-8F2D-4F92-A4F2-33920AE3B850} = {8FBBB073-A0B7-4DF4-AF3D-66CD7DBC8200}
+		{552C5B35-B196-40CA-986F-E8CD856A0D75} = {1206730A-D24D-412E-A5BC-627F8493B2D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05471A8C-DD64-41E8-86B2-1BC8E358A607}
