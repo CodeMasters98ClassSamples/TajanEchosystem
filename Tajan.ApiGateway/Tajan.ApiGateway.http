@@ -1,0 +1,6 @@
+@Tajan.ApiGateway_HostAddress = http://localhost:5249
+
+GET {{Tajan.ApiGateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

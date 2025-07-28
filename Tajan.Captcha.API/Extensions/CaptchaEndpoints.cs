@@ -6,7 +6,7 @@ public static class CaptchaEndpoints
 {
     public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/users");
+        var group = endpoints.MapGroup("/generate");
 
         //group.MapGet("/{id:int}", GetUser);
         group.MapGet("/Generate", Generate).WithName("GenerateCaptcha").WithOpenApi();

@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Tajan.ProductService.Application\Tajan.ProductService.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="BackgroundJobs\" />
+  </ItemGroup>
+
 </Project>

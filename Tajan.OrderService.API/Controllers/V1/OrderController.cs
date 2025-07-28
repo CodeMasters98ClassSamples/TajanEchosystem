@@ -8,6 +8,6 @@ public class OrderController : BaseController
 {
     //[MapToApiVersion(1)]
     [HttpPost]
-    public async Task<IActionResult> Add([FromQuery] AddOrderCommand command, CancellationToken ct = default)
+    public async Task<IActionResult> Add([FromBody] AddOrderCommand command, CancellationToken ct = default)
         => await SendAsync(command, ct);
 }
