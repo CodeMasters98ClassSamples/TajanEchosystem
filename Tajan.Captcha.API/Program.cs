@@ -7,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//builder.Services.AddScoped<IDynamicSettingService, DynamicSettingService>();
+//builder.Services.AddCaptcha(builder.Configuration);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
