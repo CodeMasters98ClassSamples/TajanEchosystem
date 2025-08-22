@@ -7,7 +7,7 @@ services:
       SA_PASSWORD: "YourStrong!Passw0rd"
       ACCEPT_EULA: "Y"
     ports:
-      - "6566:1433"
+      - "6566:1433" #For login by SSMS -> .,6566
     volumes:
       - sqlvolume:/var/opt/mssql
     healthcheck:
@@ -16,7 +16,7 @@ services:
       timeout: 5s
       retries: 10
 
-  api:
+  notification-api:
     build:
       context: ./Tajan.Notification.API
       dockerfile: Dockerfile
@@ -28,5 +28,15 @@ services:
     ports:
       - "5000:80"
 
+  product-api:
+    build:
+      context: ./Tajan.ProductService.API
+      dockerfile: Dockerfile
+    depends_on:
+      - notification-api
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=MyDb;User Id=sa;Password=YourStrong!Passw0rd;
+    ports:
+      - "5001:80"
 volumes:
   sqlvolume:

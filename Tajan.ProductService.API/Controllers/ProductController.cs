@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Net.Mime;
-using System.Runtime;
 using Tajan.ProductService.API.Contracts;
 using Tajan.ProductService.API.Dtos;
 using Tajan.ProductService.API.Entities;
