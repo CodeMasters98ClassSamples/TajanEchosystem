@@ -7,4 +7,15 @@
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="MediatR" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Tajan.OrderService.Application\Tajan.OrderService.Application.csproj" />
+	  <ProjectReference Include="..\Tajan.OrderService.Domain\Tajan.OrderService.Domain.csproj" />
+	  <ProjectReference Include="..\Tajan.Standard.Infrastructure\Tajan.Standard.Infrastructure.csproj" />
+	</ItemGroup>
+
 </Project>

@@ -11,12 +11,13 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"  />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
 		<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Tajan.ProductService.Application\Tajan.ProductService.Application.csproj" />
+		<ProjectReference Include="..\Tajan.Standard.Infrastructure\Tajan.Standard.Infrastructure.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,14 +1,17 @@
 ﻿using MediatR;
-using Tajan.OrderService.Domain.Entities;
+using OrderAggregate =  Tajan.OrderService.Domain.Entities.OrderAggregates;
 using Tajan.Standard.Domain.Wrappers;
+using Tajan.OrderService.Domain.Entities.OrderAggregates;
 
 namespace Tajan.OrderService.Application.Usecases;
 
-internal class AddOrderCommandHandler : IRequestHandler<AddOrderCommand, Result<OrderHeader>>
+internal class AddOrderCommandHandler : IRequestHandler<AddOrderCommand, Result<OrderAggregate.Order>>
 {
-    public async Task<Result<OrderHeader>> Handle(AddOrderCommand request, CancellationToken cancellationToken)
+    public async Task<Result<OrderAggregate.Order>> Handle(AddOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = new OrderHeader() { Id = 1, Description = "" };
-        return Result.Success<OrderHeader>(data: order);
+        var order = OrderAggregate.Order.Create(description: request.Description, userId: 1, details: null); // Order is Aggergate Root
+        
+
+        return Result.Success<OrderAggregate.Order>(data: order);
     }
 }
