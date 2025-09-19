@@ -1,0 +1,16 @@
+For Testing Notification queue:
+
+docker run --rm -it -p 15672:15672 -p 5672:5672 -d rabbitmq:3-management
+
+Address: http://localhost:15672/
+Username: guest
+Password: guest
+
+Contract Exchange: sms-send-queue:
+{
+  "MobileNumber":"09129564205",
+  "Content":"Test",
+  "Title": "Test Title",
+  "ExternalId": 12
+}
+-------------------------

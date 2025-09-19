@@ -8,6 +8,10 @@ namespace Tajan.OrderService.Infrastructure.Persistence.Contexts;
 
 public class ApplicationDbContext : SharedDbContext
 {
+    public ApplicationDbContext(DbContextOptions options, IMediator mediator) : base(options, mediator)
+    {
+    }
+
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
 

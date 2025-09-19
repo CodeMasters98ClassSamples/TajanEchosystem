@@ -8,7 +8,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="FluentValidation" />
+		<PackageReference Include="MassTransit.RabbitMQ" />
 		<PackageReference Include="MediatR" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" />
+		<PackageReference Include="Microsoft.Extensions.Http.Polly" />
+		<PackageReference Include="Polly" />
 	</ItemGroup>
 
 	<ItemGroup>

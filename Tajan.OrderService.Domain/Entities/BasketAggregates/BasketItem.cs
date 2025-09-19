@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tajan.OrderService.Domain.Abstractions;
+﻿using Tajan.OrderService.Domain.Entities.OrderAggregates.ValueObjects;
+using Tajan.Standard.Domain.Abstractions;
 
-namespace Tajan.OrderService.Domain.Entities.BasketAggregates
+namespace Tajan.OrderService.Domain.Entities.BasketAggregates;
+
+public class BasketItem: Entity
 {
-    internal class BasketItem: Entity
-    {
-        public int MyProperty { get; set; }
-    }
+    public int OrderHeaderId { get; private set; }
+    public int ProductId { get; private set; }
+    public Price Price { get; private set; }
 }

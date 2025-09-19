@@ -1,14 +1,23 @@
-﻿using MediatR;
+﻿using MassTransit;
+using MassTransit.Transports;
+using MediatR;
 using Tajan.OrderService.Domain.Entities.OrderAggregates;
 using Tajan.OrderService.Domain.Entities.OrderAggregates.Events;
 using Tajan.Standard.Application.Abstractions;
+using Tajan.Standard.Application.ServiceIngtegrations.NotificationService;
 
 namespace Tajan.OrderService.Application.Usecases.Order.Events;
 
 
 public class SendOrderPendingNotificationToUserEventHandler : INotificationHandler<DomainEventNotification<SendOrderPendingNotificationToUserEvent>>
 {
-    public Task Handle(DomainEventNotification<SendOrderPendingNotificationToUserEvent> notification, CancellationToken ct)
+    private readonly IPublishEndpoint _publishEndpoint;
+    public SendOrderPendingNotificationToUserEventHandler(IPublishEndpoint publishEndpoint)
+    {
+        _publishEndpoint = publishEndpoint;
+    }
+
+    public async Task Handle(DomainEventNotification<SendOrderPendingNotificationToUserEvent> notification, CancellationToken ct)
     {
         List<OrderDetail> details = new();
         decimal totalOrderAmount = 0;
@@ -20,9 +29,9 @@ public class SendOrderPendingNotificationToUserEventHandler : INotificationHandl
         {
             //Send Notifictaiuon
         }
-
-        // e.g., log, send email, enqueue outbox message, etc.
-        Console.WriteLine($"[DomainEvent] Order created: {notification.DomainEvent.OccurredOnUtc}");
-        return Task.CompletedTask;
+        await _publishEndpoint.Publish<SendSingleSms>(new
+        {
+            
+        });
     }
 }

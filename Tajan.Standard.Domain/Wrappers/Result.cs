@@ -9,6 +9,7 @@ public record Error(string Code, string Message)
     //Best practise: make it readonly
     public static readonly Error None = new(string.Empty, string.Empty);
     public static readonly Error NullValue = new("Error.NullValue", "A null value was encountered.");
+    public static readonly Error NotFoundItem = new("Error.NotFound", "Nothing Found!");
 }
 
 //for being immutable i set all properties init!

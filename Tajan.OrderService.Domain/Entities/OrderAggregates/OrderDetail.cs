@@ -14,7 +14,6 @@ public class OrderDetail
 
     }
 
-
     public static OrderDetail Create(int productId,decimal price)
     {
         return new OrderDetail()

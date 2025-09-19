@@ -1,4 +1,4 @@
-﻿using Tajan.OrderService.Domain.Abstractions;
+﻿using Tajan.Standard.Domain.Abstractions;
 
 namespace Tajan.OrderService.Domain.Entities.OrderAggregates.Events;
 

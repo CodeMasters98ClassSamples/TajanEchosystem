@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Tajan.Standard.Domain.Wrappers;
 
-namespace Tajan.OrderService.API.Controllers;
+namespace Tajan.Standard.Presentation.Abstractions;
 
-[Route("/api/[controller]/[action]")]
 [ApiController]
-public class BaseController : ControllerBase
+[Route("api/[controller]/[action]")]
+public class CustomController : ControllerBase
 {
     private ISender _mediator;
     private ISender Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
@@ -39,4 +40,3 @@ public class BaseController : ControllerBase
     protected async Task<ObjectResult> SendAsync(IRequest<Result<long>> request, CancellationToken ct = default)
         => await SendAsync<long>(request, ct);
 }
-

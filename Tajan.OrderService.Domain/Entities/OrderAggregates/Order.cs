@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
-using Tajan.OrderService.Domain.Abstractions;
-using Tajan.OrderService.Domain.Entities.OrderAggregates.Enums;
+﻿using Tajan.OrderService.Domain.Entities.OrderAggregates.Enums;
 using Tajan.OrderService.Domain.Entities.OrderAggregates.Events;
+using Tajan.OrderService.Domain.Entities.OrderAggregates.Exceptions;
+using Tajan.Standard.Domain.Abstractions;
 
 namespace Tajan.OrderService.Domain.Entities.OrderAggregates;
 
@@ -10,27 +10,26 @@ public class Order : Entity
 
     public static Order Create(string description, int userId, List<OrderDetail> details)
     {
-        if (details is null || details.Count == 0)
-        {
-            throw new Exception();// Domain Excewption
-        }
-
         //Domain Business Rule
+        if (details is null || details.Count == 0)
+            throw new InvalidOrderDetailException();
+
         if (userId > 0)
-        {
-            throw new Exception();// Domain Excewption
-        }
+            throw new InvalidUserException();
 
-        Raise(new SendOrderPendingNotificationToUserEvent(UserId: userId));
-
-        return new Order()
+        var order = new Order()
         {
             Id = userId,
             Description = description,
             Status = Status.ACCEPTED
         };
 
-    
+        foreach (var detail in details)
+            order.AddDetail(detail: detail);
+
+        order.Raise(new SendOrderPendingNotificationToUserEvent(UserId: userId));
+
+        return order;
     }
 
     public Order()
@@ -46,27 +45,19 @@ public class Order : Entity
     public DateTime CreateAt { get; private set; }
     public ICollection<OrderDetail> Details { get; private set; }
 
-    public void AddDetail(Order order,OrderDetail detail)
+    public void AddDetail(OrderDetail detail)
     {
-        if (order.Status == Status.PENDING)
-        {
-            order.Details.Add(detail);
-        }
+        if (Status == Status.PENDING)
+            Details.Add(detail);
         else
-        {
-            throw new Exception();// Domain Exption
-        }
+            throw new InvalidOrderDetailException();
     }
 
-    public void CancelOrder(Order order)
+    public void CancelOrder()
     {
-        if (order == null)
+        if (CreateAt <= DateTime.Now.AddHours(-5))
         {
-        }
-
-        if (order.CreateAt <= DateTime.Now.AddHours(-5))
-        {
-            order.Status = Status.CANCELED;
+            Status = Status.CANCELED;
         }
     }
 }

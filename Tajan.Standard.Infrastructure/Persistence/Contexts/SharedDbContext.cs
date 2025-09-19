@@ -6,10 +6,10 @@ using Tajan.Standard.Application.Abstractions;
 
 namespace Tajan.Standard.Infrastructure.Persistence.Contexts;
 
-public class SharedDbContext : DbContext
+public class SharedDbContext : DbContext, IApplicationDbContext
 {
     private readonly IMediator _mediator;
-    public SharedDbContext(DbContextOptions<SharedDbContext> options, IMediator mediator) : base(options)
+    public SharedDbContext(DbContextOptions options, IMediator mediator) : base(options)
     {
         _mediator = mediator;
     }
@@ -76,4 +76,5 @@ public class SharedDbContext : DbContext
         var notificationType = typeof(DomainEventNotification<>).MakeGenericType(domainEventType);
         return (INotification?)Activator.CreateInstance(notificationType, domainEvent);
     }
+
 }
