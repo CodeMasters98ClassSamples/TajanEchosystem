@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddDbContext<ApplicationDbContext>(option => option.UseInMemoryDatabase("AppDbContext"));
 
-builder.Services.AddHostedService<SmsOutBoxJob>();
+//builder.Services.AddHostedService<SmsOutBoxJob>();
 
 builder.Services.Configure<RabbitMqSettings>(builder.Configuration.GetSection("RabbitMqSettings"));
 
@@ -24,7 +24,7 @@ builder.Services.AddMassTransit(x =>
     {
         RabbitMqSettings rabbitMqSettings = ctx.GetRequiredService<IOptions<RabbitMqSettings>>().Value;
 
-        cfg.Host(rabbitMqSettings.Host, rabbitMqSettings.Port.ToString(), rabbitMqSettings.VirtualHost, h =>
+        cfg.Host(host: rabbitMqSettings.Host,port: rabbitMqSettings.Port, rabbitMqSettings.VirtualHost, h =>
         {
             h.Username(rabbitMqSettings.Username);
             h.Password(rabbitMqSettings.Password);
