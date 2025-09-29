@@ -1,5 +1,6 @@
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Tajan.ApiGateway.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,9 @@ if (!string.IsNullOrEmpty(environment))
 
 builder.Configuration.AddJsonFile(ocelotFile, optional: false, reloadOnChange: true);
 builder.Services.AddOcelot(builder.Configuration);
+
+builder.Services.AddCustomAuthentication();
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -30,7 +34,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseUserIdHeader();
 
 app.MapControllers();
 

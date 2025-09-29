@@ -4,6 +4,8 @@ using Tajan.OrderService.Infrastructure.Persistence.Contexts;
 using Tajan.Standard.Application.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using EFCoreSecondLevelCacheInterceptor;
+using Tajan.OrderService.Domain.Services;
+using Tajan.OrderService.Infrastructure.DomainServices;
 
 namespace Tajan.OrderService.Infrastructure;
 
@@ -18,7 +20,7 @@ public static class ConfigureServices
         bool useInMemoryDb = configuration.GetValue<bool>("UseInMemoryDataBase");
 
         if (useInMemoryDb)
-            services.AddDbContext<ApplicationDbContext>(option => option.UseInMemoryDatabase("AppDbContext"));
+            services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(option => option.UseInMemoryDatabase("AppDbContext"));
         else
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>((serviceProvider, options)
                    => options.UseSqlServer(connectionString)
@@ -27,6 +29,8 @@ public static class ConfigureServices
         services.AddHealthChecks()
                 .AddSqlServer(connectionString);
 
+
+        services.AddTransient<IOrderService, Tajan.OrderService.Infrastructure.DomainServices.OrderService>();
 
         return services;
     }

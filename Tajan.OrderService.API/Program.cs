@@ -9,6 +9,7 @@ builder.Services.Configure<ServiceAddresses>(builder.Configuration.GetSection(na
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services
     .AddApplicationLayer()

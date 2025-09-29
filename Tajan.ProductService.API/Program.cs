@@ -45,10 +45,10 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<CoreDbContext>();
-    context.Products.AddRange(
-        new Product { Id = 1, Name = "Notebook", Price = 5.99m },
-        new Product { Id = 2, Name = "Pen", Price = 1.49m }
-    );
+    //context.Products.AddRange(
+    //    new Product { Id = 1, Name = "Notebook", Price = 5.99m },
+    //    new Product { Id = 2, Name = "Pen", Price = 1.49m }
+    //);
     context.SaveChanges();
 }
 

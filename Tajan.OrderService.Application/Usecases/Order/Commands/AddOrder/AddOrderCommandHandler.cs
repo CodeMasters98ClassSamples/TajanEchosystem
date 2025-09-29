@@ -3,20 +3,28 @@ using OrderAggregate =  Tajan.OrderService.Domain.Entities.OrderAggregates;
 using Tajan.Standard.Domain.Wrappers;
 using Tajan.Standard.Domain.Abstratcions;
 using Tajan.OrderService.Application.Contracts.ExternalServices;
+using Microsoft.AspNetCore.Http;
 
 namespace Tajan.OrderService.Application.Usecases;
 
 internal class AddOrderCommandHandler : IRequestHandler<AddOrderCommand, Result<int>>
 {
     private readonly IProductService _ProductService;
-    public AddOrderCommandHandler(IProductService ProductService)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public AddOrderCommandHandler(
+        //IProductService ProductService,
+        IHttpContextAccessor httpContextAccessor)
     {
-        _ProductService = ProductService;
+        _httpContextAccessor = httpContextAccessor;
+        //_ProductService = ProductService;
     }
     public async Task<Result<int>> Handle(AddOrderCommand request, CancellationToken cancellationToken)
     {
 		try
 		{
+            var httpContext = _httpContextAccessor.HttpContext;
+            var userId = httpContext?.Request.Headers["X-User-Id"].FirstOrDefault();
+
             //Get Products Data?
             //var products = _ProductService.GetProductsAsync();
             //if (products is null)

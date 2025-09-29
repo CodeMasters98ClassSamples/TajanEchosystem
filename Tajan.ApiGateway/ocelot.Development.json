@@ -4,6 +4,20 @@
   },
   "Routes": [
     {
+      "UpstreamPathTemplate": "/identityService/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get", "Put", "Option" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5223
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "SwaggerKey": "IdentityService"
+    },
+    {
       "UpstreamPathTemplate": "/OrderService/{everything}",
       "UpstreamHttpMethod": [ "Post", "Get", "Put", "Delete", "Option" ],
       "DownstreamPathTemplate": "/{everything}",
@@ -11,15 +25,18 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7115
+          "Port": 7116
         }
       ],
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "Bearer",
-      //  "AllowedScopes": []
-      //},
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
       "DangerousAcceptAnyServerCertificateValidator": true,
-      "SwaggerKey": "OrderService"
+      "SwaggerKey": "OrderService",
+      "AddHeadersToRequest": {
+        "X-User-Id": "{Claims.uid}",
+        "X-From-Gateway": "1"
+      }
     },
     {
       "UpstreamPathTemplate": "/ProductService/{everything}",

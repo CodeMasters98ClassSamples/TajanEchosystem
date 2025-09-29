@@ -14,18 +14,18 @@ public static class ConfigureServices
     {
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ConfigureServices).Assembly));
 
-        //services.AddHttpClient<IProductService>((serviceProvider, client) =>
-        //{
-        //    //var settings = serviceProvider
-        //    //    .GetRequiredService<IOptions<SampleSetting>>().Value;
+        services.AddHttpClient<IProductService>((serviceProvider, client) =>
+        {
+            //var settings = serviceProvider
+            //    .GetRequiredService<IOptions<SampleSetting>>().Value;
 
-        //    //client.DefaultRequestHeaders.Add("Authorization", settings.GitHubToken);
-        //    //client.DefaultRequestHeaders.Add("User-Agent", settings.UserAgent);
+            //client.DefaultRequestHeaders.Add("Authorization", settings.GitHubToken);
+            //client.DefaultRequestHeaders.Add("User-Agent", settings.UserAgent);
 
-        //    client.BaseAddress = new Uri(addresses.ProductServicePath);
-        //})
-        //.AddPolicyHandler(GetRetryPolicy())
-        //.AddPolicyHandler(GetCircuitBreakerPolicy());
+            client.BaseAddress = new Uri("https://localhost:7252");
+        })
+        .AddPolicyHandler(GetRetryPolicy())
+        .AddPolicyHandler(GetCircuitBreakerPolicy());
 
 
         services.AddMassTransit(x =>

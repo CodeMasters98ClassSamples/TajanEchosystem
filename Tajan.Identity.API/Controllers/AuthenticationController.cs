@@ -10,7 +10,7 @@ public class AuthenticationController : CustomController
     //public async Task<IActionResult> Login(LoginCommand command, CancellationToken ct = default)
     //=> await SendAsync<object>(command, ct);
 
-    [HttpGet]
-    public async Task<IActionResult> Login(CancellationToken ct = default)
-        => await SendAsync<object>(new LoginCommand("1", "1"), ct);
+    [HttpPost]
+    public async Task<IActionResult> Login([FromBody] LoginCommand loginCommand, CancellationToken ct = default)
+        => await SendAsync<object>(loginCommand, ct);
 }
