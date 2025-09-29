@@ -16,13 +16,13 @@ public class Order : Entity
 
         if (userId > 0)
             throw new InvalidUserException();
-
         var order = new Order()
         {
             Id = userId,
             Description = description,
             Status = Status.ACCEPTED
         };
+
 
         foreach (var detail in details)
             order.AddDetail(detail: detail);
