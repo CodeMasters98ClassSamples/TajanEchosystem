@@ -2,7 +2,7 @@
 
 namespace Tajan.OrderService.Domain.Entities.OrderAggregates.Events;
 
-public class SendOrderPendingNotificationToUserEvent(int UserId) : IDomainEvent
+public class SendOrderPendingNotificationToUserEvent(string UserId) : IDomainEvent
 {
     public static string Message = "کاربر گرامی سفارش شما با موفقیت ثبت شد.";
 

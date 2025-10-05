@@ -1,7 +1,5 @@
 ﻿using MassTransit;
-using MassTransit.Transports;
 using MediatR;
-using Tajan.OrderService.Domain.Entities.OrderAggregates;
 using Tajan.OrderService.Domain.Entities.OrderAggregates.Events;
 using Tajan.Standard.Application.Abstractions;
 using Tajan.Standard.Application.ServiceIngtegrations.NotificationService;
@@ -19,19 +17,11 @@ public class SendOrderPendingNotificationToUserEventHandler : INotificationHandl
 
     public async Task Handle(DomainEventNotification<SendOrderPendingNotificationToUserEvent> notification, CancellationToken ct)
     {
-        List<OrderDetail> details = new();
-        decimal totalOrderAmount = 0;
-        for (int i = 0; i < details.Count; i++)
-        {
-            totalOrderAmount += details[i].Price.Amount;
-        }
-        if (totalOrderAmount > 1000)
-        {
-            //Send Notifictaiuon
-        }
         await _publishEndpoint.Publish<SendSingleSms>(new
         {
-            
+            MobileNumber = "09129564205",
+            Content = "سفارش شما با موفقیت انجام شد.",
+            Title = "تکمیل سفارش",
         });
     }
 }

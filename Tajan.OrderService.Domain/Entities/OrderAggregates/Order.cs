@@ -8,21 +8,27 @@ namespace Tajan.OrderService.Domain.Entities.OrderAggregates;
 public class Order : Entity
 {
 
-    public static Order Create(string description, int userId, List<OrderDetail> details)
+    public static Order Create(string description, string userId, List<OrderDetail> details)
     {
         //Domain Business Rule
-        if (details is null || details.Count == 0)
-            throw new InvalidOrderDetailException();
+        //if (details is null /*|| details.Count == 0*/)
+        //    throw new InvalidOrderDetailException();
 
-        if (userId > 0)
+        if (string.IsNullOrEmpty(userId))
             throw new InvalidUserException();
+
         var order = new Order()
         {
-            Id = userId,
+            UserId = userId,
             Description = description,
-            Status = Status.ACCEPTED
+            Status = Status.ACCEPTED,
+            Details = [],
+            Code = "jnew "
         };
 
+        //List<OrderDetail> details = new List<OrderDetail> { };
+        //OrderDetail detail = OrderDetail.Create(productId: 1, price: 5000);
+        //details.Add(detail);
 
         foreach (var detail in details)
             order.AddDetail(detail: detail);
@@ -39,15 +45,16 @@ public class Order : Entity
 
     public int Id { get; private set; }
     public string Description { get; private set; }
-    public int UserId { get; private set; }
+    public string UserId { get; private set; }
     public string Code { get; private set; }
     public Status Status { get; private set; }
     public DateTime CreateAt { get; private set; }
+    public bool IsDeleted { get; set; }
     public ICollection<OrderDetail> Details { get; private set; }
 
     public void AddDetail(OrderDetail detail)
     {
-        if (Status == Status.PENDING)
+        if (Status == Status.PENDING || Status == Status.ACCEPTED)
             Details.Add(detail);
         else
             throw new InvalidOrderDetailException();

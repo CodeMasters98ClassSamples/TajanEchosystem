@@ -5,10 +5,11 @@ using Tajan.Standard.Domain.Abstratcions;
 using Tajan.OrderService.Application.Contracts.ExternalServices;
 using Microsoft.AspNetCore.Http;
 using Tajan.Standard.Application.Abstractions;
-using Tajan.OrderService.Domain.Entities.OrderAggregates;
 using MassTransit;
-using MassTransit.Transports;
-using Tajan.Standard.Application.ServiceIngtegrations.NotificationService;
+using Tajan.OrderService.Domain.Entities.OrderAggregates;
+using Grpc.Core;
+using Grpc.Net.Client;
+using Products.Grpc;
 
 namespace Tajan.OrderService.Application.Usecases;
 
@@ -17,14 +18,12 @@ internal class AddOrderCommandHandler : IRequestHandler<AddOrderCommand, Result<
     private readonly IProductService _ProductService;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IApplicationDbContext _dbContext;
-    private readonly IPublishEndpoint _publishEndpoint;
     public AddOrderCommandHandler(
         //IProductService ProductService,
         IHttpContextAccessor httpContextAccessor,
         IApplicationDbContext dbContext,
         IPublishEndpoint publishEndpoint)
     {
-        _publishEndpoint = publishEndpoint;
         _dbContext = dbContext;
         _httpContextAccessor = httpContextAccessor;
         //_ProductService = ProductService;
@@ -33,22 +32,33 @@ internal class AddOrderCommandHandler : IRequestHandler<AddOrderCommand, Result<
     {
 		try
 		{
-            await _publishEndpoint.Publish<SendSingleSms>(new
-            {
-                MobileNumber = "09129564205",
-                Content = "09129564205",
-                Title = "09129564205",
-            });
+            List<OrderDetail> details = new List<OrderDetail> { };
+
+            //Get User From Context
             var httpContext = _httpContextAccessor.HttpContext;
             var userId = httpContext?.Request.Headers["X-User-Id"].FirstOrDefault();
 
-            //Get Products Data?
-            //var products = _ProductService.GetProductsAsync();
-            //if (products is null)
-            //{
-            //    //Appliction exception
-            //}
-            var order = OrderAggregate.Order.Create(description: request.Description, userId: 1, details: null);
+            var handler = new HttpClientHandler();
+            // For HTTP (no TLS) in dev only:
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+            for (int i = 0; i < request.Produts.Count; i++)
+            {
+                using var channel = GrpcChannel.ForAddress("https://localhost:7281", new GrpcChannelOptions
+                {
+                    HttpHandler = handler
+                });
+                var client = new Products.Grpc.Products.ProductsClient(channel);
+                // Optional auth/JWT
+                //var headers = new Metadata { { "Authorization", "Bearer " + jwtToken } };
+                var headers = new Metadata { };
+                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3)); // deadline/timeout
+                var reply = await client.GetProductAsync(new GetProductRequest { Id = request.Produts[i].Id }, headers, cancellationToken: cts.Token);
+                OrderDetail detail = OrderDetail.Create(productId: request.Produts[i].Id, price: reply.Amount);
+                details.Add(detail);
+            }
+
+            var order = OrderAggregate.Order.Create(description: request.Description, userId: userId, details: details);
             _dbContext.Set<OrderAggregate.Order>().Add(order);
             await _dbContext.SaveChangesAsync();
             return Result.Success<int>(data: order.Id);

@@ -14,10 +14,6 @@
           "Port": 5223
         }
       ],
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "Bearer",
-      //  "AllowedScopes": []
-      //},
       "DangerousAcceptAnyServerCertificateValidator": true,
       "SwaggerKey": "IdentityService"
     },

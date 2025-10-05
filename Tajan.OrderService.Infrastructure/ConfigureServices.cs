@@ -29,7 +29,6 @@ public static class ConfigureServices
         services.AddHealthChecks()
                 .AddSqlServer(connectionString);
 
-
         services.AddTransient<IOrderService, Tajan.OrderService.Infrastructure.DomainServices.OrderService>();
 
         return services;

@@ -16,5 +16,4 @@ public class ApplicationDbContext : SharedDbContext
     public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
 
 
-
 }

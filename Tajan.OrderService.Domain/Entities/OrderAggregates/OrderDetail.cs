@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tajan.OrderService.Domain.Entities.OrderAggregates.ValueObjects;
+﻿using Tajan.OrderService.Domain.Entities.OrderAggregates.ValueObjects;
 
 namespace Tajan.OrderService.Domain.Entities.OrderAggregates;
 
@@ -18,10 +13,15 @@ public class OrderDetail
     {
         return new OrderDetail()
         {
-            ProductId = productId
+            ProductId = productId,
+            Price = price,
+            //Price =  new Price(price,"RIAL")
         };
     }
+    public int Id { get; set; }
     public int OrderHeaderId { get; private set; }
     public int ProductId { get; private set; }
-    public Price Price { get; private set; }
+    public bool IsDeleted { get; set; }
+    public decimal Price { get; private set; }
+    //public Price Price { get; private set; }
 }
