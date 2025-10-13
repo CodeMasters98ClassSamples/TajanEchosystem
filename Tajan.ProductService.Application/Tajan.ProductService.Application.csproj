@@ -13,6 +13,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Tajan.ProductServcie.Domain\Tajan.ProductServcie.Domain.csproj" />
+		<ProjectReference Include="..\Tajan.Standard.Application\Tajan.Standard.Application.csproj" />
 	</ItemGroup>
 
 </Project>

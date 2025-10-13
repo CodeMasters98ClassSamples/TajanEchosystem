@@ -1,6 +1,8 @@
 For Testing Notification queue:
 
-docker run --rm -it -p 15672:15672 -p 5672:5672 -d rabbitmq:3-management
+
+To Create Redis Image: docker run -d --rm --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+To Create RabbitMQ Image: docker run --rm -it -p 15672:15672 -p 5672:5672 -d rabbitmq:3-management
 
 Address: http://localhost:15672/
 Username: guest
@@ -14,3 +16,9 @@ Contract Exchange: sms-send-queue:
   "ExternalId": 12
 }
 -------------------------
+
+For Run By Docker in Each Service(in root folder):
+docker build -f Tajan.Notification.API/Dockerfile -t tajan-notification:latest .
+
+For Run By Docker Compose:
+docker-compose up --build

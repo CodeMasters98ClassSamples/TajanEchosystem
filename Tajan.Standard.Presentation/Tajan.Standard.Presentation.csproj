@@ -8,10 +8,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="AspNetCore.HealthChecks.UI.Client" />
 	  <PackageReference Include="MediatR" />
+	  <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" />
 	  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
 	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" />
 	  <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting" />
+	  <PackageReference Include="Serilog" />
 	</ItemGroup>
 
 	<ItemGroup>

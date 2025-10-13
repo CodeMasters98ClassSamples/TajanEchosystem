@@ -52,8 +52,8 @@ internal class AddOrderCommandHandler : IRequestHandler<AddOrderCommand, Result<
                 // Optional auth/JWT
                 //var headers = new Metadata { { "Authorization", "Bearer " + jwtToken } };
                 var headers = new Metadata { };
-                var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3)); // deadline/timeout
-                var reply = await client.GetProductAsync(new GetProductRequest { Id = request.Produts[i].Id }, headers, cancellationToken: cts.Token);
+                //var cts = new CancellationTokenSource(TimeSpan.FromSeconds(50)); // deadline/timeout
+                var reply = await client.GetProductAsync(new GetProductRequest { Id = request.Produts[i].Id }, headers);
                 OrderDetail detail = OrderDetail.Create(productId: request.Produts[i].Id, price: reply.Amount);
                 details.Add(detail);
             }

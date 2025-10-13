@@ -1,55 +1,55 @@
-using System.Runtime;
-using Tajan.ProductService.API.Contracts;
 using Tajan.ProductService.API.Settings;
 using Tajan.ProductService.Infrastructure;
 using Tajan.ProductService.Application;
 using Tajan.ProductService.Infrastructure.DbContexts;
+using Tajan.Standard.Infrastructure.CacheProvider;
+using Tajan.Standard.Presentation.Extentions;
+using Tajan.Standard.Presentation.Correlation;
+using Tajan.Standard.Presentation.Cors;
 using Tajan.ProductService.API.Entities;
+using Tajan.Standard.Presentation.GlobalExceptionHandler;
 
 var builder = WebApplication.CreateBuilder(args);
+string connectionString = builder.Configuration.GetConnectionString("CoreDbContext");
+var useInMemoryDatabase = builder.Configuration.GetValue<bool>("UseInMemoryDatabase");
+builder.Services.Configure<MySettings>(builder.Configuration.GetSection(nameof(MySettings)));
 
 builder.Services.AddControllers();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-string connectionString = builder.Configuration.GetConnectionString("CoreDbContext");
-if (string.IsNullOrEmpty(connectionString))
-{
-
-}
-
-var useInMemoryDatabase = builder.Configuration.GetValue<bool>("UseInMemoryDatabase");
-
 builder.Services
     .AddApplicationLayer()
-    .AddInfrastrauctureLayer(connectionString, useInMemoryDatabase);
-
-builder.Services.Configure<MySettings>(builder.Configuration.GetSection(nameof(MySettings)));
+    .AddInfrastrauctureLayer(connectionString, useInMemoryDatabase)
+    .AddEndpointsApiExplorer()
+    .AddSwaggerGen()
+    .AddGlobalExceptionHandler()
+    .AddBasicCors()
+    .AddCorrelationContext()
+    .AddCacheProvider(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app
+    .UseCorrelationId()
+    .UseExceptionHandler()
+    .UseBasicCors();
 
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
+app.MapHealthCheckEndpoints();
 
-using (var scope = app.Services.CreateScope())
+if (app.Environment.IsDevelopment() && useInMemoryDatabase)
 {
-    var context = scope.ServiceProvider.GetRequiredService<CoreDbContext>();
-    //context.Products.AddRange(
-    //    new Product { Id = 1, Name = "Notebook", Price = 5.99m },
-    //    new Product { Id = 2, Name = "Pen", Price = 1.49m }
-    //);
-    context.SaveChanges();
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<CoreDbContext>();
+        context.Products.AddRange(
+                Product.Create(1, "Notebook", 5000),
+                Product.Create(2, "Pen", 1000)
+        );
+        context.SaveChanges();
+    }
 }
-
 app.Run();

@@ -16,14 +16,13 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY . .
-RUN dotnet restore "/src/Tajan.Notification.API.csproj"
-COPY . .
-WORKDIR "/src/"
-RUN dotnet build "/src/Tajan.Notification.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet restore "/src/Tajan.Notification.API/Tajan.Notification.API.csproj"
+WORKDIR "/src/Tajan.Notification.API"
+RUN dotnet build "/src/Tajan.Notification.API/Tajan.Notification.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "/src/Tajan.Notification.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "/src/Tajan.Notification.API/Tajan.Notification.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

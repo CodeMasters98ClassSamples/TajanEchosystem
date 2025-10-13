@@ -11,6 +11,7 @@ public record Error(string Code, string Message)
     public static readonly Error NullValue = new("Error.NullValue", "A null value was encountered.");
     public static readonly Error NotFoundItem = new("Error.NotFound", "Nothing Found!");
     public static readonly Error InvalidUser = new("Error.InvalidUser", "Invalid Username or password!");
+    public static readonly Error Default = new("Error.Default", "Error.Default");
 }
 
 //for being immutable i set all properties init!

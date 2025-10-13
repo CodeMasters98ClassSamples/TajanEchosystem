@@ -18,22 +18,33 @@ services:
 
   notification-api:
     build:
-      context: ./Tajan.Notification.API
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Tajan.Notification.API/Dockerfile
     depends_on:
       sqlserver:
         condition: service_healthy
     environment:
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=MyDb;User Id=sa;Password=YourStrong!Passw0rd;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=MyDb;User Id=sa;Password=YourStrong!Passw0rd;Encrypt=True;TrustServerCertificate=True;MultipleActiveResultSets=True;
     ports:
       - "5000:80"
 
   product-api:
     build:
-      context: ./Tajan.ProductService.API
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Tajan.ProductService.API/Dockerfile
     depends_on:
       - notification-api
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=MyDb;User Id=sa;Password=YourStrong!Passw0rd;
+    ports:
+      - "5001:80"
+
+  order-api:
+    build:
+      context: .
+      dockerfile: Tajan.OrderService.API/Dockerfile
+    depends_on:
+      - product-api
     environment:
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=MyDb;User Id=sa;Password=YourStrong!Passw0rd;
     ports:

@@ -1,6 +1,7 @@
 using Tajan.OrderService.Application;
 using Tajan.OrderService.Infrastructure;
 using Tajan.OrderService.API.Settings;
+using Tajan.Standard.Infrastructure.CacheProvider;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddCacheProvider(builder.Configuration);
 
 builder.Services
     .AddApplicationLayer()
