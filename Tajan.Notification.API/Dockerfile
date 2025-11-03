@@ -9,7 +9,7 @@ USER root
 RUN apt-get update && apt-get install -y curl bash
 
 ENV ASPNETCORE_URLS="http://+:80;"
-EXPOSE 8080
+EXPOSE 80
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build

@@ -37,7 +37,7 @@ services:
     environment:
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=MyDb;User Id=sa;Password=YourStrong!Passw0rd;
     ports:
-      - "5001:80"
+      - "5001:8080"
 
   order-api:
     build:
@@ -48,6 +48,6 @@ services:
     environment:
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=MyDb;User Id=sa;Password=YourStrong!Passw0rd;
     ports:
-      - "5001:80"
+      - "5002:8080"
 volumes:
   sqlvolume:
