@@ -29,7 +29,9 @@ public static class ConfigureServices
         services.AddHealthChecks()
                 .AddSqlServer(connectionString);
 
-        services.AddTransient<IOrderService, Tajan.OrderService.Infrastructure.DomainServices.OrderService>();
+    services.AddTransient<IOrderService, Tajan.OrderService.Infrastructure.DomainServices.OrderService>();
+    // Basket repository
+    services.AddScoped<Tajan.OrderService.Domain.Entities.BasketAggregates.Repositories.IBasketRepository, Tajan.OrderService.Infrastructure.Persistence.Repositories.BasketRepository>();
 
         return services;
     }

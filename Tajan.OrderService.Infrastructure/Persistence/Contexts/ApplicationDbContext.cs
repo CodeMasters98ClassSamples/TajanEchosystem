@@ -14,6 +14,8 @@ public class ApplicationDbContext : SharedDbContext
 
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
+    public DbSet<Tajan.OrderService.Domain.Entities.BasketAggregates.Basket> Baskets => Set<Tajan.OrderService.Domain.Entities.BasketAggregates.Basket>();
+    public DbSet<Tajan.OrderService.Domain.Entities.BasketAggregates.BasketItem> BasketItems => Set<Tajan.OrderService.Domain.Entities.BasketAggregates.BasketItem>();
 
 
 }
