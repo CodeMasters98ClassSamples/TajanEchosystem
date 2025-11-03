@@ -114,6 +114,10 @@ Acceptance Scenarios:
   CRUD and an Order read summary.
 - The product catalog service exists and provides product IDs and pricing; this feature calls read-only product
   lookup during validation (contract test coverage required).
+ - Implementation location: The basket functionality will be implemented inside the existing `Tajan.OrderService`
+   (no separate Basket service). This keeps the basket and order aggregates colocated and avoids an extra
+   service layer.
+ - Platform version: All services MUST target .NET 9.0 (net9.0). Update project files accordingly.
 
 ## Dependencies
 

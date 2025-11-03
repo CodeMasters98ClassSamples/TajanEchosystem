@@ -9,6 +9,9 @@ Decision: Use the existing relational database used by other services (SQL Serve
 `Baskets` schema/table. This keeps operational surface smaller and aligns with repository conventions
 for consistency.
 
+Implementation note: The basket schema and related logic will be added to the existing `Tajan.OrderService`
+database schema (no separate DB or service). Ensure migrations are added to `Tajan.OrderService/Migrations/`.
+
 Rationale:
 - The repository uses .NET and typical enterprise setups in this workspace use SQL Server; reusing the
   same database reduces operational overhead and simplifies transaction patterns.

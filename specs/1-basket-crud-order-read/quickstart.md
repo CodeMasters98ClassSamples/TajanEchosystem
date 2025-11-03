@@ -16,12 +16,15 @@ Run locally (development)
 docker-compose up -d
 ```
 
-2. Build and run the Basket service (or the service project that will host basket endpoints):
-
-```powershell
-cd src/Tajan.Basket.Service  # or the appropriate project path
 dotnet build
 dotnet run --configuration Development
+2. Build and run the Order service (basket functionality is implemented inside `Tajan.OrderService`):
+
+```powershell
+# Example path - adjust to actual project in this repository
+cd src/Tajan.OrderService.API
+dotnet build -f net9.0
+dotnet run --configuration Development --framework net9.0
 ```
 
 3. Run contract tests (Product/Identity mocks):

@@ -10,7 +10,7 @@ acceptance tests, and CI contract checks.
 
 ## Technical Context
 
-**Language/Version**: .NET (C#) ecosystem (repository convention).  
+**Language/Version**: .NET 9.0 (C#) ecosystem (repository convention).  
 **Primary Dependencies**: Identity provider (`Tajan.Identity.API`), Product catalog service, Order service,
 Ocelot (API gateway), central package manager (Directory.Packages.props).  
 **Storage**: NEEDS CLARIFICATION: Choice of persistent store for baskets and read-models (SQL Server vs
@@ -31,8 +31,9 @@ Constitution principles (Clean Architecture, DDD, Observability).
 
 This change touches the following constitution principles:
 
-- Service Autonomy & Clean Architecture — baskets implemented as a distinct service or as part of the
-  Product/Order boundary with strict layering.  
+ - Service Autonomy & Clean Architecture — basket functionality will be implemented inside the
+   `Tajan.OrderService` (no separate Basket service) but MUST respect Clean Architecture layering within
+   that project (API, Application, Domain, Infrastructure).
 - Identity & Access Control — basket ownership and read/query must validate identity via `Tajan.Identity.API`.  
 - Domain-Driven Design & Bounded Contexts — Order read query is a read-model inside the Order bounded
   context; Basket is a separate model.  
@@ -82,7 +83,8 @@ be justified in Phase 0 research and recorded.
 
 ## Phase 2: Implementation Planning (high level tasks)
 
-- T001 Setup: create service module for Basket (or add module if service exists), wire DI and configs.
+- T001 Setup: implement basket module inside the existing `Tajan.OrderService` project (no separate Basket
+  service). Wire DI and configuration within `Tajan.OrderService` and ensure the project targets .NET 9.0.
 - T002 Contracts: implement OpenAPI endpoints and add contract tests (Product, Identity mocks).
 - T003 Persistence: implement repository and migrations for Basket and read-model (per decision).
 - T004 Handlers: implement command handlers for add/update/remove and query handlers for reads.
