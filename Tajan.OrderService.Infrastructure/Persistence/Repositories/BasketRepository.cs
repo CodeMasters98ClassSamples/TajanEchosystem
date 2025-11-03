@@ -22,25 +22,30 @@ public class BasketRepository : IBasketRepository
 
     public async Task AddOrUpdateItemAsync(int userId, int productId, int quantity, decimal unitPrice)
     {
-        var basket = await GetByUserIdAsync(userId) ?? new Basket();
-        // naive implementation: create basket if null
-        if (basket.Items == null)
-            basket = new Basket();
-
-        var existing = basket.Items.FirstOrDefault(i => i.ProductId == productId);
-        if (existing != null)
+        var basket = await GetByUserIdAsync(userId);
+        var isNew = false;
+        if (basket == null)
         {
-            // update quantity by replacing (domain methods can be improved)
-            // Note: Basket.UpdateItem implementation is placeholder in domain
-            basket.DeleteItem(existing);
+            basket = new Basket(userId);
+            isNew = true;
         }
 
-        var item = new BasketItem();
-        // reflection: set properties via EF mapping or constructor in full implementation
-        // for now use public setters if available; this is a minimal scaffold
+        var existing = basket.Items?.FirstOrDefault(i => i.ProductId == productId);
+        if (existing != null)
+        {
+            // remove existing to replace with updated quantity
+            basket.DeleteItem(existing);
+            _db.BasketItems.Remove(existing);
+        }
 
-        // attach and save
-        _db.BasketItems.Add(item);
+        var price = new Tajan.OrderService.Domain.Entities.OrderAggregates.ValueObjects.Price(unitPrice, "USD");
+        var item = new BasketItem(productId, price, quantity);
+
+    basket.Items!.Add(item);
+
+        if (isNew)
+            _db.Baskets.Add(basket);
+
         await _db.SaveChangesAsync();
     }
 

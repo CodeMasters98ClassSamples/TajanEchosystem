@@ -59,12 +59,14 @@ public class SharedDbContext : DbContext, IApplicationDbContext
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.CurrentValues["IsDeleted"] = false;
+                    if (entry.CurrentValues.Properties.Any(p => p.Name == "IsDeleted"))
+                        entry.CurrentValues["IsDeleted"] = false;
                     break;
 
                 case EntityState.Deleted:
                     entry.State = EntityState.Modified;
-                    entry.CurrentValues["IsDeleted"] = true;
+                    if (entry.CurrentValues.Properties.Any(p => p.Name == "IsDeleted"))
+                        entry.CurrentValues["IsDeleted"] = true;
                     break;
             }
         }

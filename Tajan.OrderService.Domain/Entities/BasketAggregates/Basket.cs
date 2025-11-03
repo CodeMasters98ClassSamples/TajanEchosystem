@@ -13,6 +13,18 @@ public class Basket: Entity
     public Status Status { get; private set; }
     public DateTime CreateAt { get; private set; }
     public ICollection<BasketItem> Items { get; private set; }
+    public Basket()
+    {
+        Description = string.Empty;
+        Code = string.Empty;
+    Status = Status.PENDING;
+        CreateAt = DateTime.UtcNow;
+        Items = new List<BasketItem>();
+    }
+    public Basket(int userId) : this()
+    {
+        UserId = userId;
+    }
     public Basket AddItem(BasketItem item)
     {
         //
