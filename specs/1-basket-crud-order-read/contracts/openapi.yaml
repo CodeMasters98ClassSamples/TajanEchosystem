@@ -1,0 +1,106 @@
+openapi: 3.0.0
+info:
+  title: Basket & Order Summary API (spec)
+  version: 1.0.0
+paths:
+  /api/baskets:
+    post:
+      summary: Create or add item to basket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                productId:
+                  type: string
+                quantity:
+                  type: integer
+              required:
+                - productId
+                - quantity
+      responses:
+        '200':
+          description: Item added to basket
+  /api/baskets/{userId}:
+    get:
+      summary: Get basket for user
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Basket fetched
+    delete:
+      summary: Clear basket for user
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Basket cleared
+  /api/baskets/{userId}/item/{productId}:
+    put:
+      summary: Update item quantity in basket
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+              required:
+                - quantity
+      responses:
+        '200':
+          description: Item updated
+    delete:
+      summary: Remove item from basket
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: productId
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Item removed
+  /api/orders/{orderId}/summary:
+    get:
+      summary: Get lightweight order summary
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order summary
+        '404':
+          description: Not found
