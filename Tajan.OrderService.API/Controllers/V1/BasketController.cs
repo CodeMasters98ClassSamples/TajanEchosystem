@@ -21,4 +21,12 @@ public class BasketsController : ControllerBase
         await _mediator.Send(command);
         return Ok();
     }
+
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> GetBasket([FromRoute] int userId)
+    {
+        var result = await _mediator.Send(new Tajan.OrderService.Application.Usecases.Order.Queries.GetBasket.GetBasketQuery(userId));
+        if (result == null) return NotFound();
+        return Ok(result);
+    }
 }
