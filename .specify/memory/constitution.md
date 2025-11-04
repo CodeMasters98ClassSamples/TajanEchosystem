@@ -1,14 +1,14 @@
 <!--
 Sync Impact Report
 
-Version change: TEMPLATE -> 1.0.0
+Version change: 1.0.0 -> 1.0.1
 
 Modified principles:
-- [PRINCIPLE_1_NAME] -> Service Autonomy & Clean Architecture
-- [PRINCIPLE_2_NAME] -> Identity & Access Control (Identity-First Security)
-- [PRINCIPLE_3_NAME] -> Domain-Driven Design & Bounded Contexts
-- [PRINCIPLE_4_NAME] -> Shared Standards & Central Package Management
-- [PRINCIPLE_5_NAME] -> Observability, Testing & Reliability
+- Service Autonomy & Clean Architecture (no rename)
+- Identity & Access Control (no rename)
+- Domain-Driven Design & Bounded Contexts (clarified: CQRS usage in Order domain)
+- Shared Standards & Central Package Management (no rename)
+- Observability, Testing & Reliability (no rename)
 
 Added sections:
 - Additional Constraints & Standards
@@ -23,8 +23,8 @@ Templates requiring updates:
 
 Follow-up TODOs:
 - Review and update templates listed above to add explicit Constitution Check gates and references to
-	package/versioning rules (owner: maintainers). These are marked as pending instead of automatic edits
-	to avoid unintended template changes.
+	package/versioning rules and CQRS/contract testing guidance (owner: maintainers). These are marked
+	as pending instead of automatic edits to avoid unintended template changes.
 -->
 
 # Project Constitution: Tajan Ecosystem
@@ -58,6 +58,11 @@ domain events, repositories, domain services). Cross-context integration MUST us
 or explicit contracts to prevent model leakage.
 
 Rationale: DDD keeps domain logic correct and focused, and prevents accidental coupling between domains.
+
+Note on CQRS: The `Tajan.OrderService` implements Command Query Responsibility Segregation (CQRS);
+commands and queries are separated into distinct handlers and models. Services following CQRS MUST keep
+command handlers idempotent where applicable, isolate read models from write models, and use domain
+events / eventual consistency patterns to synchronize state across bounded contexts when necessary.
 
 ### Shared Standards & Central Package Management
 Common code that is intended for reuse across services MUST live in the `Tajan.Standard.*` projects and

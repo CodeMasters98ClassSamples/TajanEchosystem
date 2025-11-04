@@ -19,17 +19,31 @@ public static class ConfigureServices
 
         bool useInMemoryDb = configuration.GetValue<bool>("UseInMemoryDataBase");
 
+        // Register EF second-level cache services used by the DbContext interceptor
+        services.AddMemoryCache();
+        services.AddEFSecondLevelCache(options =>
+            options.UseMemoryCacheProvider()
+        );
+        // Ensure the interceptor itself is available for AddInterceptors call
+        services.AddSingleton<SecondLevelCacheInterceptor>();
+
         if (useInMemoryDb)
+        {
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(option => option.UseInMemoryDatabase("AppDbContext"));
+        }
         else
+        {
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>((serviceProvider, options)
                    => options.UseSqlServer(connectionString)
                    .AddInterceptors(serviceProvider.GetRequiredService<SecondLevelCacheInterceptor>()));
+        }
 
         services.AddHealthChecks()
                 .AddSqlServer(connectionString);
 
-        services.AddTransient<IOrderService, Tajan.OrderService.Infrastructure.DomainServices.OrderService>();
+    services.AddTransient<IOrderService, Tajan.OrderService.Infrastructure.DomainServices.OrderService>();
+    // Basket repository
+    services.AddScoped<Tajan.OrderService.Domain.Entities.BasketAggregates.Repositories.IBasketRepository, Tajan.OrderService.Infrastructure.Persistence.Repositories.BasketRepository>();
 
         return services;
     }

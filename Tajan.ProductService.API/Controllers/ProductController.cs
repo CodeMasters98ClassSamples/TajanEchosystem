@@ -48,11 +48,13 @@ public class ProductController : CustomController
         //dto to object
         //1. Install Package
         //2. Mapping by developer
-        Product product = new(){};
+        // Map DTO -> Domain entity. Price is not provided by DTO today; use 0 as default.
+        Product product = Product.Create(dto.Name, 0);
 
-        //Business Call
-        _productService.Add(product);
+        // Business Call
+        var id = _productService.Add(product);
 
-        return Ok(product.Id);
+        // Return created id
+        return Ok(id);
     }
 }
