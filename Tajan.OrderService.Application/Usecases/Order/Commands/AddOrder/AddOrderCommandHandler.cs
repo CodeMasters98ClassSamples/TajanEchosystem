@@ -16,7 +16,6 @@ namespace Tajan.OrderService.Application.Usecases;
 
 internal class AddOrderCommandHandler : IRequestHandler<AddOrderCommand, Result<int>>
 {
-    private readonly IProductService? _ProductService;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IApplicationDbContext _dbContext;
     private readonly IConfiguration _configuration;
@@ -38,12 +37,10 @@ internal class AddOrderCommandHandler : IRequestHandler<AddOrderCommand, Result<
 		{
             List<OrderDetail> details = new List<OrderDetail> { };
 
-            //Get User From Context
             var httpContext = _httpContextAccessor.HttpContext;
             var userId = httpContext?.Request.Headers["X-User-Id"].FirstOrDefault();
 
             var handler = new HttpClientHandler();
-            // read configured gRPC URL (fall back to localhost dev url)
             var grpcUrl = _configuration["PRODUCT_GRPC_URL"] ?? "https://localhost:7281";
 
             // If using unencrypted HTTP for gRPC in docker, enable HTTP/2 unencrypted support
