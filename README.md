@@ -1,5 +1,7 @@
 # Tajan Echosystem
 
+![Architecture diagram](docs/TajanEcosystem.png)
+
 This repository contains a set of small .NET 9 microservices used for local development and integration testing of the Tajan echosystem (API Gateway, Identity, Product (API + gRPC), Order, Notification, etc.).
 
 This README documents how to set up the project locally (Windows), how to run the full stack with Docker Compose, useful troubleshooting steps, and tips to speed up Docker builds.

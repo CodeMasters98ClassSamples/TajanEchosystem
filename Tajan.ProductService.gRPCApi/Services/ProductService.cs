@@ -20,24 +20,64 @@ public class ProductService : Products.Grpc.Products.ProductsBase
 
     public override async Task<GetProductResponse> GetProduct(GetProductRequest request, ServerCallContext context)
     {
-        Product product = await _cacheProvider
-                    .GetAsync<Product>(CacheKey.Product(request.Id), default);
-        if (product is null)
+        try
         {
-            product = await _dbContext.Set<Product>().FirstOrDefaultAsync(x => x.Id == request.Id);
-            await _cacheProvider.SetAsync(CacheKey.Product(request.Id), product, default);
-        }
+            // defensive null checks for injected dependencies
+            if (_dbContext == null)
+                throw new RpcException(new Status(StatusCode.Internal, "Database context is not available"));
 
-        if (product is null)
-        {
-            throw new RpcException(new Status(StatusCode.NotFound, $"Product {request.Id} not found"));
-        }
+            Product? product = null;
 
-        var result = new GetProductResponse
+            if (_cacheProvider != null)
+            {
+                try
+                {
+                    product = await _cacheProvider.GetAsync<Product>(CacheKey.Product(request.Id), default);
+                }
+                catch
+                {
+                    // ignore cache errors and continue to DB
+                    product = null;
+                }
+            }
+
+            if (product is null)
+            {
+                product = await _dbContext.Set<Product>().FirstOrDefaultAsync(x => x.Id == request.Id);
+
+                if (_cacheProvider != null)
+                {
+                    try
+                    {
+                        await _cacheProvider.SetAsync(CacheKey.Product(request.Id), product, default);
+                    }
+                    catch
+                    {
+                        // ignore cache set errors
+                    }
+                }
+            }
+
+            if (product is null)
+            {
+                throw new RpcException(new Status(StatusCode.NotFound, $"Product {request.Id} not found"));
+            }
+
+            var result = new GetProductResponse
+            {
+                Amount = product.Price,
+                Name = product.Name
+            };
+
+            return result;
+        }
+        catch (RpcException)
         {
-            Amount = product.Price,
-            Name = product.Name
-        };
-        return await Task.FromResult(result);
+            throw;
+        }
+        catch (Exception ex)
+        {
+            throw new RpcException(new Status(StatusCode.Internal, $"Internal server error: {ex.Message}"));
+        }
     }
 }
