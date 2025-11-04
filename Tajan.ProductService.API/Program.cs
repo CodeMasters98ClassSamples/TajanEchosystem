@@ -52,4 +52,23 @@ if (app.Environment.IsDevelopment() && useInMemoryDatabase)
         context.SaveChanges();
     }
 }
+
+// If running with a real SQL Server (not in-memory), ensure the DB schema/tables exist
+if (!useInMemoryDatabase)
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<CoreDbContext>();
+        try
+        {
+            context.Database.EnsureCreated();
+        }
+        catch (Exception ex)
+        {
+            // In local/dev docker-compose runs multiple services may attempt DB creation concurrently.
+            // Ignore errors where the database already exists and continue running so the service stays up.
+            Console.WriteLine($"Warning: EnsureCreated failed: {ex.Message}");
+        }
+    }
+}
 app.Run();

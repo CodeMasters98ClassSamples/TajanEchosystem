@@ -28,6 +28,10 @@ public class ProductService : Products.Grpc.Products.ProductsBase
             await _cacheProvider.SetAsync(CacheKey.Product(request.Id), product, default);
         }
 
+        if (product is null)
+        {
+            throw new RpcException(new Status(StatusCode.NotFound, $"Product {request.Id} not found"));
+        }
 
         var result = new GetProductResponse
         {

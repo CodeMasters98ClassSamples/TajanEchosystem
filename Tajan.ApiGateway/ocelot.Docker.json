@@ -1,0 +1,62 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://api-gateway:8080"
+  },
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/identityService/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get", "Put", "Option" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "identity-api",
+          "Port": 80
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "SwaggerKey": "IdentityService"
+    },
+    {
+      "UpstreamPathTemplate": "/OrderService/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get", "Put", "Delete", "Option" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "order-api",
+          "Port": 8080
+        }
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "SwaggerKey": "OrderService",
+      "ClaimsToHeaders": [
+        {
+          "Key": "X-User-Id",
+          "Value": "uid"
+        }
+      ],
+      "AddHeadersToRequest": {
+        "X-User-Id": "{Claims.uid}",
+        "X-From-Gateway": "1"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/ProductService/{everything}",
+      "UpstreamHttpMethod": [ "Post", "Get", "Put", "Delete", "Option" ],
+      "DownstreamPathTemplate": "/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "product-api",
+          "Port": 8080
+        }
+      ],
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "SwaggerKey": "ProductService"
+    }
+  ]
+}
